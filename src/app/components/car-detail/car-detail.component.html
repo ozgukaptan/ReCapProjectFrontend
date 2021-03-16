@@ -1,0 +1,66 @@
+<div *ngIf="dataLoaded == true">
+  <div class="col-md-6">
+    <div class="form-group row">
+      <label for="example-date-input" class="col-2 col-form-label"
+        >Alış Tarihi</label
+      >
+      <div class="col-10">
+        <input
+          class="form-control"
+          type="date"
+          value="2011-08-19"
+          id="example-date-input"
+          [(ngModel)]="rentDate"
+        />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="example-date-input" class="col-2 col-form-label"
+        >İade Tarihi</label
+      >
+      <div class="col-10">
+        <input
+          class="form-control"
+          type="date"
+          value="2011-08-19"
+          id="example-date-input"
+          [(ngModel)]="returnDate"
+        />
+      </div>
+    </div>
+    <button (click)="getIsRentable()" type="button" class="btn btn-success">
+      Kirala
+    </button>
+  </div>
+  <h2>Aracın Bilgileri</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Araba Marka</th>
+        <th>Araba Renk</th>
+        <th>Araba Model Yılı</th>
+        <th>Araba Günlük Fiyatı</th>
+        <th>Araba Açıklama</th>
+      </tr>
+    </thead>
+    <tr>
+      <td>{{ carDetail.brand }}</td>
+      <td>{{ carDetail.color }}</td>
+      <td>{{ carDetail.modelYear }}</td>
+      <td>{{ carDetail.dealyPrice }}</td>
+      <td>{{ carDetail.description }}</td>
+    </tr>
+  </table>
+</div>
+<div *ngIf="dataLoaded == true" class="row">
+  <h2>Aracın Fotoğrafları</h2>
+  <div *ngFor="let carImage of carDetail?.carImages" class="col-md-4">
+    <div class="thumbnail">
+      <img
+        src="{{ apiUrl }}{{ carImage.imagePath }}"
+        alt="Lights"
+        style="width: 100%"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="content">
+    <div class="col-md-12">
+      <div class="panel-footer text-center">
+        <span class="d-block p-1 bg-primary text-white" style="margin-top: 10px">
+          <h5>Arabalar</h5>
+        </span>
+      </div>
+        
+      <div *ngIf="dataLoaded == false" class="spinner-border text-primary" role="status" >
+        <span class="visually-hidden">Loading...</span>
+      </div>
+        
+      <table *ngIf="dataLoaded == true" id="colorsTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            
+            <th>Marka</th>
+            <th>Renk</th>
+            <th>Model Yılı</th>
+            <th>Günlük Fiyat</th>
+            <th>Açıklama</th>
+            <th style="text-align: center; width: 100px">
+              <button type="button" data-func="dt-add" class="btn btn-success btn-xs dt-add formButton" data-bs-toggle="modal" data-bs-target="#addCarModal" (click)="setSelectedCarToAdd()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true">Ekle</span>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carDetail of carDetails">
+            
+            <td>{{ carDetail.brand }}</td>
+            <td>{{ carDetail.color }}</td>
+            <td>{{ carDetail.modelYear }}</td>
+            <td>{{ carDetail.dealyPrice }}</td>
+            <td>{{ carDetail.description }}</td>
+            <td>
+               <button type="button" class="btn btn-primary btn-xs formButton" data-bs-toggle="modal" data-bs-target="#updateCarModal" (click)="setSelectedCarToUpdate(carDetail)" style="margin-right: 16px">
+                <i class="">Güncelle</i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+   <!--addCarModal-->
+   <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="addCarModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="AddCarTitle">Araç Ekle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="carAddForm" >
+            <div class="row">
+              <div class="col-8">
+                <label for="brandId">Marka</label>
+                <select  class="form-select" aria-label="Default select example" formControlName="brandId">
+                    <option *ngFor="let brand of brands" id="brandId"  [ngValue]="brand.id" >{{brand.name}}</option>
+                  </select>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                  <label for="colorId">Renk</label>
+                  <select  class="form-select" aria-label="Default select example" formControlName="colorId">
+                    <option *ngFor="let color of colors" id="colorId"  [ngValue]="color.id"  >{{color.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <label for="modelYear">Model Yılı</label>
+                  <input type="text" class="form-control" id="modelYear" formControlName="modelYear">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <label for="dealyPrice">Günlük Fiyat</label>
+                  <input type="number" class="form-control" id="dealyPrice" formControlName="dealyPrice">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <label for="description">Açıklama</label>
+                  <input type="text" class="form-control" id="description" formControlName="description">
+                </div>
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+          <button class="btn btn-success" (click)="addCar()" data-bs-dismiss="modal" >Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!--updateCarModal-->
+   <div class="modal fade" id="updateCarModal" tabindex="-1" aria-labelledby="updateCarModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="UpdateCarTitle">Araç Güncelle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="carUpdateForm" *ngIf="carUpdateForm" >
+            <div class="row">
+                <div class="col-8" >
+                  <input type="number" class="form-control" id="id" formControlName="id" value="{{selectedcar.id}}" hidden>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-8">
+                <label for="brandId">Marka</label>
+                <select  class="form-select" aria-label="Default select example" formControlName="brandId">
+                    <option *ngFor="let brand of brands" id="brandId"  [ngValue]="brand.id">{{brand.name}}</option>
+                  </select>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                  <label for="colorId">Renk</label>
+                  <select  class="form-select" aria-label="Default select example" formControlName="colorId">
+                    <option *ngFor="let color of colors" id="colorId"  [ngValue]="color.id">{{color.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <label for="modelYear">Model Yılı</label>
+                  <input type="text" class="form-control" id="modelYear" formControlName="modelYear" value="{{selectedcar.modelYear}}">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <label for="dealyPrice">Günlük Fiyat</label>
+                  <input type="number" class="form-control" id="dealyPrice" formControlName="dealyPrice" value="{{selectedcar.dealyPrice}}">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-8">
+                  <label for="description">Açıklama</label>
+                  <input type="text" class="form-control" id="description" formControlName="description" value="{{selectedcar.description}}">
+                </div>
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+          <button class="btn btn-success" (click)="updateCar()" data-bs-dismiss="modal" >Güncelle</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   
