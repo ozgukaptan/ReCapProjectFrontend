@@ -49,6 +49,7 @@ export class BrandListComponent implements OnInit {
       })
     }
   }
+  
 
   updateBrand() {
     if (this.brandUpdateForm.valid) {
